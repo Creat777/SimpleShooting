@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 public class BackGroundMusic : GameAudio
 {
     public AudioClip defaultMusic;
+    public AudioClip playMusic;
     public AudioClip bossMusic;
     public static BackGroundMusic Instance { get; private set; }
 
@@ -51,6 +52,9 @@ public class BackGroundMusic : GameAudio
     {
         if (audioSource != null)
         {
+            // 이미 재생되는 음악이면 함수 종료
+            if (audioSource.clip == bossMusic) return;
+
             audioSource.Stop();
             audioSource.loop = true;
             audioSource.clip = bossMusic;
@@ -62,12 +66,30 @@ public class BackGroundMusic : GameAudio
         }
     }
 
-    public void BossExit()
+    public void LetsPlay()
     {
         
         if (audioSource != null)
         {
-            // 보스를 만난적 없으면 함수실행 취소
+            // 이미 재생되는 음악이면 함수 종료
+            if (audioSource.clip == playMusic) return;
+
+            audioSource.Stop();
+            audioSource.loop = true;
+            audioSource.clip = playMusic;
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogError("audioSource == null");
+        }
+    }
+
+    public void DefaultPlay()
+    {
+        if (audioSource != null)
+        {
+            // 이미 재생되는 음악이면 함수 종료
             if (audioSource.clip == defaultMusic) return;
 
             audioSource.Stop();

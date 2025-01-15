@@ -37,26 +37,31 @@ public class SceneManager : MonoBehaviour
     public void Button_GoToMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        BackGroundMusic.Instance.DefaultPlay();
     }
 
     public void Button_GameStart()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+        BackGroundMusic.Instance.LetsPlay();
     }
 
 
     public void Button_CheckScore()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Score");
+        BackGroundMusic.Instance.DefaultPlay();
     }
 
     public void Button_Option()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Option");
+        BackGroundMusic.Instance.DefaultPlay();
     }
 
     public void Button_LoginScreen()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
+        BackGroundMusic.Instance.DefaultPlay();
     }
 }

@@ -3,11 +3,14 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting.ReorderableList;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class EnemyBoss : EnemyMonster
 {
     TextAsset csvFile;
     List<List<float>> positionCsv;
+    public AudioSource audioSource;
+    public AudioClip[] clips;
 
     // 게임 실행중 고정변수
     float moveDelay;
@@ -30,7 +33,7 @@ public class EnemyBoss : EnemyMonster
     private void NormalVarInit()
     {
         float level = GameManager.Instance.gameDifficulty;
-        maxHp = hp = (int)(1000 * ((level - 1 / 2) + 1)); // 1배 ~ 3배
+        maxHp = hp = (int)(500 * ((level - 1 / 2) + 1)); // 1배 ~ 3배
         damage = 20;
         defeatScore = 1000;
         MaxExplosionCount = 20;
@@ -69,29 +72,37 @@ public class EnemyBoss : EnemyMonster
         {
             explosionCountDown--;
             Vector3 effactPosition = transform.position + Vector3.left;
+            AudioProcess();
             EffactPoolManager.Instance.GetObject(effactPosition);
             EffactPoolManager.Instance.GetObject(effactPosition + Vector3.up * 0.5f);
             EffactPoolManager.Instance.GetObject(effactPosition + Vector3.left * 0.5f);
+            
         }
         else if (explosionCountDown == MaxExplosionCount-1 && hp < maxHp * ((float)1 / 3))
         {
             explosionCountDown--;
             Vector3 effactPosition = transform.position + Vector3.right;
+            AudioProcess();
             EffactPoolManager.Instance.GetObject(effactPosition);
             EffactPoolManager.Instance.GetObject(effactPosition + Vector3.up * 0.5f);
             EffactPoolManager.Instance.GetObject(effactPosition + Vector3.right * 0.5f);
+            
         }
         else if (hp <= 0) // 보스 사망시 점수처리하고 게임 종료됨
         {
             // 점수처리만 처리함
-            MonsterDefeated();
+            if(explosionCountDown == MaxExplosionCount - 2)
+            {
+                MonsterDefeated();
+            }
 
             // 게임 정지
             GameManager.Instance.isGamePause = true;
 
-            // 이펙트 처리
+            // 이펙트 및 오디오 처리
             if(isExplosion == false)
             {
+                AudioProcess();
                 StartCoroutine(BossDefeatEffact(transform.position, 1));
             }
 
@@ -157,6 +168,14 @@ public class EnemyBoss : EnemyMonster
         isExplosion = false;
     }
 
+    public void AudioProcess()
+    {
+        int index = explosionCountDown % 3;
+        audioSource.volume = ButtonClickAudio.Instance.LoadVolumeData();
+        audioSource.clip = clips[index];
+        audioSource.Play();
+    }
+
     public override void Move()
     {
         int randomIndex = Random.Range(0, positionCsv.Count);
@@ -185,6 +204,22 @@ public class EnemyBoss : EnemyMonster
 
     public override void OutOfScreen()
     {
+        StartCoroutine(StartDelay(3.0f));
+    }
+
+    IEnumerator StartDelay(float delay)
+    {
+        Vector3 position = GameManager.Instance.FloatListToVector3(positionCsv[0]);
+        
+        // 지정된 위치로 이동후 이펙트 표현
+        
+        yield return new WaitForSeconds(delay / 2);
+
+        // 지정된 위치로 후퇴
+        transform.DOMove(position + Vector3.up * 3, delay/2);
+        yield return new WaitForSeconds(delay / 2);
+
+        // 후퇴했으면 게임 종료
         gameObject.SetActive(false);
         GameManager.Instance.GameOver();
     }

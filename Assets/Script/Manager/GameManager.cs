@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        BackGroundMusic.Instance.BossExit();
+        BackGroundMusic.Instance.LetsPlay();
         isGameStart = false;
         isBossExist = false;
         canvas.GetComponent<MainCanvas>().menuButton.SetActive(true);
@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
         MakeSingleTone();
 
         // 최대시간 설정
-        MaxTime_ = 30;
+        MaxTime_ = 45;
 
         // 보스 유무
         isBossExist = false;
