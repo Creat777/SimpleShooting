@@ -1,7 +1,5 @@
 using UnityEngine;
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 
 public class EnemyShooter : EnemyMonster
 {
@@ -19,15 +17,14 @@ public class EnemyShooter : EnemyMonster
         isDelayed = false;
     }
 
-    public override void WhenDamaged(GameObject bullet)
-    {
-        if (bullet.tag == "MainBullet")
-            HpDown(bullet.GetComponent<MainBullet>().damage);
-        else if (bullet.tag == "SubBullet")
-            HpDown(bullet.GetComponent<SubBullet>().damage);
-        if (animator.GetBool("isDamaged") == false)
-            AnimeChange();
-    }
+    //public override void WhenDamaged(GameObject bullet)
+    //{
+    //    if (bullet.tag == "MainBullet" || bullet.tag == "SubBullet")
+    //        HpDown(bullet.GetComponent<Bullet>().damage);
+    //    animator.SetTrigger("isDamaged");
+    //    //if (animator.GetBool("isDamaged") == false)
+    //    //    AnimeChange();
+    //}
 
     public override void Move()
     {

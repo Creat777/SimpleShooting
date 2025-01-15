@@ -17,14 +17,13 @@ public class EnemySuicide : EnemyMonster
         base.Update();
     }
 
-    public override void OnTriggerInit(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnTriggerInit(collision);
+        base.OnTriggerEnter2D(collision);
         if (collision.gameObject == player)
         {
             EnemyPoolSuicideBomber.Instance.ReturnObject(gameObject);
         }
-
     }
 
     public override void Move()
@@ -35,13 +34,13 @@ public class EnemySuicide : EnemyMonster
         gameObject.transform.position = pos;
     }
 
-    public override void WhenDamaged(GameObject bullet)
-    {
-        if (bullet.tag == "MainBullet")
-            HpDown(bullet.GetComponent<MainBullet>().damage);
-        else if (bullet.tag == "SubBullet")
-            HpDown(bullet.GetComponent<SubBullet>().damage);
-    }
+    //public override void WhenDamaged(GameObject bullet)
+    //{
+    //    if (bullet.tag == "MainBullet")
+    //        HpDown(bullet.GetComponent<MainBullet>().damage);
+    //    else if (bullet.tag == "SubBullet")
+    //        HpDown(bullet.GetComponent<SubBullet>().damage);
+    //}
 
     public override void OutOfScreen()
     {

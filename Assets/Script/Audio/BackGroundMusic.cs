@@ -3,7 +3,8 @@ using UnityEngine.Audio;
 
 public class BackGroundMusic : GameAudio
 {
-
+    public AudioClip defaultMusic;
+    public AudioClip bossMusic;
     public static BackGroundMusic Instance { get; private set; }
 
     void MakeSingleTone()
@@ -32,6 +33,7 @@ public class BackGroundMusic : GameAudio
             if(audioSource.isPlaying == false)
             {
                 audioSource.loop = true;
+                audioSource.clip = defaultMusic;
                 audioSource.Play();
             }
             else
@@ -43,12 +45,39 @@ public class BackGroundMusic : GameAudio
         {
             Debug.LogError("audioSource == null");
         }
-
     }
 
+    public void BossEnter()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.loop = true;
+            audioSource.clip = bossMusic;
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogError("audioSource == null");
+        }
+    }
 
-    void Update()
+    public void BossExit()
     {
         
+        if (audioSource != null)
+        {
+            // 보스를 만난적 없으면 함수실행 취소
+            if (audioSource.clip == defaultMusic) return;
+
+            audioSource.Stop();
+            audioSource.loop = true;
+            audioSource.clip = defaultMusic;
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogError("audioSource == null");
+        }
     }
 }

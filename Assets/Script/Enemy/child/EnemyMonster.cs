@@ -13,13 +13,15 @@ public abstract class EnemyMonster : Enemy
     [SerializeField] protected float defeatScore;
     [SerializeField] public GameObject scorePanel;
     [SerializeField] public Animator animator;
-    float animationDelay;
-    private void Start()
+
+    protected float animationCount;
+    protected float animationDelay;
+    protected virtual void Start()
     {
         InitBundle();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         InitBundle();
     }
@@ -28,7 +30,7 @@ public abstract class EnemyMonster : Enemy
         player = GameObject.FindWithTag("Player");
         scorePanel = GameObject.Find("ScorePanel");
         animator = gameObject.GetComponent<Animator>();
-        animationDelay = 1.0f;
+        animationCount = animationDelay = 1.0f;
     }
 
     public void Initalize(Vector3 position)
@@ -47,17 +49,9 @@ public abstract class EnemyMonster : Enemy
         hp -= damage;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        OnTriggerInit(collision);
-    }
-    public virtual void OnTriggerInit(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "MainBullet")
-        {
-            WhenDamaged(collision.gameObject);
-        }
-        else if (collision.gameObject.tag == "SubBullet")
+        if (collision.gameObject.tag == "MainBullet" || collision.gameObject.tag == "SubBullet")
         {
             WhenDamaged(collision.gameObject);
         }
@@ -71,14 +65,14 @@ public abstract class EnemyMonster : Enemy
 
     IEnumerator SwitchAnimation()
     {
-        animator.SetBool("isDamaged", true);
+        //animator.SetBool("isDamaged", true);
         yield return new WaitForSeconds(animationDelay); // WaitForSeconds은 코루틴에서만 사용 가능
         // 지정된 시간(animationDelay)이 지난 후 이 지점에서 다시 코루틴 실행
-        animator.SetBool("isDamaged", false);
+        //animator.SetBool("isDamaged", false);
     }
 
 
-    public void MonsterDefeated()
+    public virtual void MonsterDefeated()
     {
         if (scorePanel != null)
         {
@@ -92,12 +86,13 @@ public abstract class EnemyMonster : Enemy
         OutOfScreen();
     }
 
+
     protected virtual void Update()
     {
         Move();
 
         // 몬스터 사망 시
-        if (hp < 0)
+        if (hp <= 0)
         {
             MonsterDefeated();
         }
@@ -107,12 +102,27 @@ public abstract class EnemyMonster : Enemy
         {
             OutOfScreen();
         }
+
+        // IdlE 복귀
+        animationCount -= Time.deltaTime;
+        if (animationCount < 0)
+        {
+            animator.Play("EnemyIdle");
+        }
     }
 
     public abstract void Move();
     
-    public abstract void WhenDamaged(GameObject obj);
-    
+    public virtual void WhenDamaged(GameObject bullet)
+    {
+        if (hp > 0)
+        {
+            animationCount = animationDelay;
+            HpDown(bullet.GetComponent<Bullet>().damage);
+            animator.Play("EnemyDamaged");
+        }
+    }
+
 
 
 

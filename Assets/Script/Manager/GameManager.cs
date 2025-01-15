@@ -10,7 +10,7 @@ public class CsvManager
     public List<List<float>> positionCsv;
     public bool isDone;
     public float doneDelay;
-   
+
 
     public CsvManager(string csvName = null, float delay = 1)
     {
@@ -41,14 +41,14 @@ public class GameManager : MonoBehaviour
     public float gameTime { get; set; }
     public bool isGameStart = false;
     public bool isGamePause = false;
-    public bool isBossExist;
-    private bool isItemDeley {  get; set; }
+    public bool isBossExist { get; set; }
+    private bool isItemDeley { get; set; }
 
     public int gameDifficulty { get; set; }
     public string gameDifficulyKey { get; set; }
     public string BackgroundVolumeKey { get; set; }
     public string EffctVolumeKey { get; set; }
-    public string[] playerRankKeys {  get; set; }
+    public string[] playerRankKeys { get; set; }
     CsvManager[] EnemyCsvManagerArr; // csv파일(enemy) 관리를 위한 객체
     CsvManager[] ItemCsvManagerArr; // csv파일(item) 관리를 위한 객체
     public string playerID;
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     public GameObject EnemyBoss;
 
     Dictionary<string, float> rankerMap;
-    
+
 
     // MainInitializerSet에서 연결
     public GameObject canvas;
@@ -86,8 +86,8 @@ public class GameManager : MonoBehaviour
         isGameStart = true;
         isGamePause = false;
 
-        if(canvas  != null)
-        { 
+        if (canvas != null)
+        {
             canvas.GetComponent<MainCanvas>().menuButton.SetActive(false);
             canvas.GetComponent<MainCanvas>().UI_Box.SetActive(true);
         }
@@ -106,7 +106,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        BackGroundMusic.Instance.BossExit();
         isGameStart = false;
+        isBossExist = false;
         canvas.GetComponent<MainCanvas>().menuButton.SetActive(true);
         canvas.GetComponent<MainCanvas>().UI_Box.SetActive(false);
 
@@ -118,12 +120,12 @@ public class GameManager : MonoBehaviour
         // 점수 목록에 기존 점수들 추가
         string[] RankersID = PlayerInfoManager.Instance.GetRankersID(playerRankKeys);
         float[] RankerScores = PlayerInfoManager.Instance.GetRankScores(RankersID);
-        
+
         // dict 초기화 후 랭커를 맵핑
         rankerMap.Clear();
         for (int i = 0; i < RankersID.Length; i++)
         {
-            if(i< RankerScores.Length)
+            if (i < RankerScores.Length)
             {
                 rankerMap.TryAdd(RankersID[i], RankerScores[i]);
             }
@@ -131,10 +133,10 @@ public class GameManager : MonoBehaviour
             {
                 Debug.LogError("RankerScores out of range");
             }
-            
+
         }
 
-        if(rankerMap.ContainsKey(playerID))// 기존 랭커에 해당 아이디가 있는 경우
+        if (rankerMap.ContainsKey(playerID))// 기존 랭커에 해당 아이디가 있는 경우
         {
             if (rankerMap[playerID] < newScore)  //새로운 점수가 더 크면 해당 점수를 저장
                 rankerMap[playerID] = newScore;
@@ -144,7 +146,7 @@ public class GameManager : MonoBehaviour
             // 점수 목록에 새로운 점수 추가
             rankerMap.Add(playerID, newScore);
         }
-        
+
 
         // 점수별로 정렬된 키값 찾기
         List<string> sortedKeys = rankerMap
@@ -162,7 +164,7 @@ public class GameManager : MonoBehaviour
     {
         // 점수 목록에 새로운 점수 추가
         float totalScore = scorePanel.GetComponent<Score>().totalScore;
-        
+
 
         // 개인 최고점수 저장
         if (PlayerInfoManager.Instance.LoadData(playerID, 0f) < totalScore)
@@ -189,7 +191,7 @@ public class GameManager : MonoBehaviour
         MakeSingleTone();
 
         // 최대시간 설정
-        MaxTime_ = 60;
+        MaxTime_ = 30;
 
         // 보스 유무
         isBossExist = false;
@@ -199,7 +201,7 @@ public class GameManager : MonoBehaviour
 
         // 디폴트 속도값 저장
         defualtGameSpeed = gameSpeed = 8;
-        
+
         // 각종 키 설정
         gameDifficulyKey = "option_GameDifficulty";
         BackgroundVolumeKey = "option_BackgroundVolumeKey";
@@ -232,7 +234,7 @@ public class GameManager : MonoBehaviour
 
 
         ItemCsvManagerArr = new CsvManager[3];
-        ItemCsvManagerArr[0] = new CsvManager("Item_Coin_1", 5.0f+3.0f);
+        ItemCsvManagerArr[0] = new CsvManager("Item_Coin_1", 5.0f + 3.0f);
         ItemCsvManagerArr[1] = new CsvManager("Item_Coin_2", 5.0f);
         ItemCsvManagerArr[2] = new CsvManager("Item_Coin_3", 5.0f + 3.0f);
 
@@ -244,7 +246,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void PositionCsvLoading(TextAsset csvFile, List<List<float>> positionCsv)
+    public void PositionCsvLoading(TextAsset csvFile, List<List<float>> positionCsv)
     {
         if (csvFile != null)
         {
@@ -262,7 +264,7 @@ public class GameManager : MonoBehaviour
                 {
                     try
                     {
-                        if(filed == "random") // x좌표에만 적용
+                        if (filed == "random") // x좌표에만 적용
                         {
                             posCsv.Add(randomValue);
                         }
@@ -281,7 +283,7 @@ public class GameManager : MonoBehaviour
             }
         }
         else
-        { 
+        {
             Debug.Log("csv파일 Load실패");
         }
     }
@@ -302,7 +304,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Vector3 FloatListToVector3(List<float> list)
+    public Vector3 FloatListToVector3(List<float> list)
     {
         Vector3 position = Vector3.zero;
         if (list.Count == 3)
@@ -323,32 +325,38 @@ public class GameManager : MonoBehaviour
         {
             gameTime += Time.deltaTime; // 게임시간 체크
 
-            if(gameTime < MaxTime/3)
-                ManageEnemyCsvObject(); // csv파일을 사용하는 객체들 관리
+            // 일반 몬스터 객체 관리
+            if (gameTime < MaxTime * (2.0f / 3.0f)) //
+            {
+                ManageEnemyCsvObject();
+                //Debug.Log("에너미 관리!");
+            }
+                
 
             // 아이템은 겹치지 않게 등장
-            if(isItemDeley == false && gameTime > 5f)
+            if (isItemDeley == false && gameTime > 5f)
                 StartCoroutine(ManageItemCsvObject());
 
-            if(isBossExist == false && gameTime > MaxTime / 3)
+            if (isBossExist == false && gameTime > MaxTime * (2.0f / 3.0f)) //
             {
+                BackGroundMusic.Instance.BossEnter();
                 EnemyBoss.SetActive(true);
                 // 스타트 포지션 코루틴
                 isBossExist = true;
             }
         }
-        
+
 
         if (gameTime > MaxTime && isGameStart)
         {
             Debug.LogWarning($"gameTime : {gameTime} > MaxTime : {MaxTime}");
             GameOver();
         }
-            
+
     }
 
     private void ManageEnemyCsvObject()
-    { 
+    {
         // 몬스터는 겹쳐도 상관없음
         foreach (var csvManager in EnemyCsvManagerArr)
         {
@@ -359,7 +367,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        
+
     }
 
     IEnumerator ManageItemCsvObject()
@@ -380,7 +388,7 @@ public class GameManager : MonoBehaviour
     IEnumerator CsvCount(CsvManager CsvManager)
     {
         string choice = CsvManager.csvFileName.Split('_')[0];
-        if(choice == "Enemy")
+        if (choice == "Enemy")
         {
             CsvManager.isDone = true;
             PositioningCsv(CsvManager);
@@ -400,18 +408,18 @@ public class GameManager : MonoBehaviour
 
     private void PositioningCsv(CsvManager CsvManager)
     {
-        if(CsvManager == null)
+        if (CsvManager == null)
         {
             Debug.LogError("CsvManager 객체가 존재하지 않음");
             return;
         }
-        
+
         if (CsvManager.positionCsv.Count != 0)
         {
             string fileFirstName = CsvManager.csvFileName.Split("_")[0];
 
             // Enemy 파일이면
-            if (fileFirstName == "Enemy") 
+            if (fileFirstName == "Enemy")
             {
                 int spawnIndex = UnityEngine.Random.Range(0, CsvManager.positionCsv.Count);
                 Vector3 Position = FloatListToVector3(CsvManager.positionCsv[spawnIndex]);
@@ -432,7 +440,7 @@ public class GameManager : MonoBehaviour
             }
 
             // Item파일이면
-            else if(fileFirstName == "Item")
+            else if (fileFirstName == "Item")
             {
                 GameObject item;
                 if (CsvManager.csvFileName == "Item_Coin_1" ||
@@ -455,7 +463,7 @@ public class GameManager : MonoBehaviour
 
 
         }
-            
+
     }
 
 }

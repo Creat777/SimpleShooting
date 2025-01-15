@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4033579614644361630
 Transform:
   m_ObjectHideFlags: 0
@@ -181,7 +181,6 @@ MonoBehaviour:
   defeatScore: 0
   scorePanel: {fileID: 0}
   animator: {fileID: 5902757973411660107}
-  clip: {fileID: 8300000, guid: f01c623f724825e44a923d1ae50256f2, type: 3}
 --- !u!95 &5902757973411660107
 Animator:
   serializedVersion: 7

@@ -23,15 +23,15 @@ public class EnemyCarrier : EnemyMonster
         //Debug.Log("carrier screen bottom : " + screenBottom);
     }
 
-    public override void WhenDamaged(GameObject bullet)
-    {
-        if (bullet.tag == "MainBullet")
-            HpDown(bullet.GetComponent<MainBullet>().damage);
-        else if (bullet.tag == "SubBullet")
-            HpDown(bullet.GetComponent<SubBullet>().damage);
-        if (animator.GetBool("isDamaged") == false)
-            AnimeChange();
-    }
+    //public override void WhenDamaged(GameObject bullet)
+    //{
+    //    if (bullet.tag == "MainBullet")
+    //        HpDown(bullet.GetComponent<MainBullet>().damage);
+    //    else if (bullet.tag == "SubBullet")
+    //        HpDown(bullet.GetComponent<SubBullet>().damage);
+    //    if (animator.GetBool("isDamaged") == false)
+    //        AnimeChange();
+    //}
 
     protected override void Update()
     {

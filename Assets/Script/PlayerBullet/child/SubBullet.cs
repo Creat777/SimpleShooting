@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SubBullet : Bullet
 {
-    public int damage { get; private set; }
+    
 
     private void Start()
     {
