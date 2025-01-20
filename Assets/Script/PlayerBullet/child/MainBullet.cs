@@ -13,6 +13,6 @@ public class MainBullet : Bullet
     {
         //Debug.Log(screenTop.ToString());
         //Debug.Log("ÃÑ¾Ë ¼Ò¸ê");
-        BulletFactory.Instance.ReturnMainBullet(gameObject);
+        PlayerBulletPool.Instance.ReturnMainBullet(gameObject);
     }
 }

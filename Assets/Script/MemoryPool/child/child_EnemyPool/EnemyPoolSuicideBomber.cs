@@ -86,7 +86,7 @@ public class EnemyPoolSuicideBomber : EnemyPool
 
     //public void ReturnEnemy(GameObject obj, AudioClip clip)
     //{
-    //    EffactPoolManager.instance.GetBombEffact(obj.transform.position, clip);
+    //    BombEffactPool.instance.GetBombEffact(obj.transform.position, clip);
     //    enemyPool.Enqueue(obj);
     //    obj.GetComponent<EnemyMonster>().Deactive();
     //}

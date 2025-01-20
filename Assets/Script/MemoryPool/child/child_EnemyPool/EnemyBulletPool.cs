@@ -1,15 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletFactory : MonoBehaviour
+public class EnemyBulletPool : MonoBehaviour
 {
     //public EnemyShooter shooter;
-    public GameObject shooterBulletPrefab;
-    private Queue<GameObject> shooterBulletPool;
+
+    // 에디터 편집
+    public GameObject EnemyBulletPrefab;
     public Sprite shooterSprite;
+
+    // 스크립트 편집
+    private Queue<GameObject> shooterBulletPool;
     private float shooterHeight;
 
-    public static EnemyBulletFactory Instance { get; private set; }
+    public static EnemyBulletPool Instance { get; private set; }
     void MakeSingleTone()
     {
         if (Instance == null)
@@ -45,7 +49,7 @@ public class EnemyBulletFactory : MonoBehaviour
 
     private void CreateShooterBullet()
     {
-        GameObject bulletObject = Instantiate(shooterBulletPrefab);
+        GameObject bulletObject = Instantiate(EnemyBulletPrefab);
         bulletObject.GetComponent<EnemyBullet>().SetDeActive();
         shooterBulletPool.Enqueue(bulletObject);
     }

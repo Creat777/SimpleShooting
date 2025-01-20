@@ -47,7 +47,7 @@ public class Button_Attack : MonoBehaviour
             audioSource.volume = ButtonClickAudio.Instance.audioSource.volume;
             audioSource.Play();
         }
-        BulletFactory.Instance.EnableBullets();
+        PlayerBulletPool.Instance.EnableBullets();
         yield return new WaitForSeconds(attackDelay/GameManager.Instance.gameSpeed);
         isDelay = false;
     }

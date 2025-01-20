@@ -86,7 +86,7 @@ public class EnemyPoolShooter : EnemyPool
 
     //public void ReturnEnemy(GameObject obj, AudioClip clip)
     //{
-    //    EffactPoolManager.instance.GetBombEffact(obj.transform.position, clip);
+    //    BombEffactPool.instance.GetBombEffact(obj.transform.position, clip);
     //    obj.GetComponent<EnemyMonster>().Deactive();
     //    enemyPool.Enqueue(obj);
     //}

@@ -13,13 +13,13 @@ public class MainInitializerSet : MonoBehaviour
     void Start()
     {
         // 메모리Pool 초기화
-        EffactPoolManager.Instance.InitializePool();
+        BombEffactPool.Instance.InitializePool();
         EnemyPoolCarrier.Instance.InitializePool();
         EnemyPoolShooter.Instance.InitializePool();
         EnemyPoolSuicideBomber.Instance.InitializePool();
         CoinMemoryPool.Instance.InitializePool();
-        BulletFactory.Instance.InitializePool();
-        EnemyBulletFactory.Instance.InitializePool();
+        PlayerBulletPool.Instance.InitializePool();
+        EnemyBulletPool.Instance.InitializePool();
 
         // 버튼 콜백함수 추가
         menuButton.GetComponent<Button>().onClick.AddListener(SceneManager.Instance.Button_GoToMenu);
@@ -51,14 +51,14 @@ public class MainInitializerSet : MonoBehaviour
     private void BulletFactoryInit()
     {
         // BulletFactory에 player 연결
-        BulletFactory.Instance.player = player;
+        PlayerBulletPool.Instance.player = player;
 
         // BulletFactory에 playerHeight및 playerWidth 초기화
         Bounds bounds = player.gameObject.GetComponent<SpriteRenderer>().sprite.bounds;
         if (bounds != null)
         {
-            BulletFactory.Instance.playerHeight = bounds.size.y;
-            BulletFactory.Instance.playerWidth = bounds.size.x;
+            PlayerBulletPool.Instance.playerHeight = bounds.size.y;
+            PlayerBulletPool.Instance.playerWidth = bounds.size.x;
         }
         else
         {

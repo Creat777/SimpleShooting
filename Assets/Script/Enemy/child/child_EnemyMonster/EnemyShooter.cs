@@ -58,7 +58,7 @@ public class EnemyShooter : EnemyMonster
         isDelayed = true;
         for (int i = 0; i < GameManager.Instance.gameDifficulty; i++)
         {
-            EnemyBulletFactory.Instance.EnableShooterBullet(transform.position);
+            EnemyBulletPool.Instance.EnableShooterBullet(transform.position);
             yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(delay);

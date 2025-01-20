@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class EffactPoolManager : MemoryPool
+public class BombEffactPool : MemoryPool
 {
-    public static EffactPoolManager Instance {  get; private set; } // ΩÃ±€≈Ê
+    public static BombEffactPool Instance {  get; private set; } // ΩÃ±€≈Ê
     //public GameObject bombEffactPrefab;
     //private Queue<GameObject> BombEffactQueue;
 

@@ -13,6 +13,6 @@ public class SubBullet : Bullet
     {
         //Debug.Log(screenTop.ToString());
         //Debug.Log("ÃÑ¾Ë ¼Ò¸ê");
-        BulletFactory.Instance.ReturnSubBullet(gameObject);
+        PlayerBulletPool.Instance.ReturnSubBullet(gameObject);
     }
 }

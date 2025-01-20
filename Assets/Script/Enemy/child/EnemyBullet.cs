@@ -44,7 +44,7 @@ public class EnemyBullet : Enemy
 
     public override void OutOfScreen()
     {
-        EnemyBulletFactory.Instance.ReturnShooterBullet(gameObject);
+        EnemyBulletPool.Instance.ReturnShooterBullet(gameObject);
     }
 
     public void SetActive()

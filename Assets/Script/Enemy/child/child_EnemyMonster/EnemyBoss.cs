@@ -73,9 +73,9 @@ public class EnemyBoss : EnemyMonster
             explosionCountDown--;
             Vector3 effactPosition = transform.position + Vector3.left;
             AudioProcess();
-            EffactPoolManager.Instance.GetObject(effactPosition);
-            EffactPoolManager.Instance.GetObject(effactPosition + Vector3.up * 0.5f);
-            EffactPoolManager.Instance.GetObject(effactPosition + Vector3.left * 0.5f);
+            BombEffactPool.Instance.GetObject(effactPosition);
+            BombEffactPool.Instance.GetObject(effactPosition + Vector3.up * 0.5f);
+            BombEffactPool.Instance.GetObject(effactPosition + Vector3.left * 0.5f);
             
         }
         else if (explosionCountDown == MaxExplosionCount-1 && hp < maxHp * ((float)1 / 3))
@@ -83,9 +83,9 @@ public class EnemyBoss : EnemyMonster
             explosionCountDown--;
             Vector3 effactPosition = transform.position + Vector3.right;
             AudioProcess();
-            EffactPoolManager.Instance.GetObject(effactPosition);
-            EffactPoolManager.Instance.GetObject(effactPosition + Vector3.up * 0.5f);
-            EffactPoolManager.Instance.GetObject(effactPosition + Vector3.right * 0.5f);
+            BombEffactPool.Instance.GetObject(effactPosition);
+            BombEffactPool.Instance.GetObject(effactPosition + Vector3.up * 0.5f);
+            BombEffactPool.Instance.GetObject(effactPosition + Vector3.right * 0.5f);
             
         }
         else if (hp <= 0) // 보스 사망시 점수처리하고 게임 종료됨
@@ -160,7 +160,7 @@ public class EnemyBoss : EnemyMonster
 
         // 계산된 점 출력
         Vector3 point = new Vector3(x, y, center.z); // z값은 그대로 유지
-        EffactPoolManager.Instance.GetObject(point);
+        BombEffactPool.Instance.GetObject(point);
 
         yield return new WaitForSeconds(0.1f);
 

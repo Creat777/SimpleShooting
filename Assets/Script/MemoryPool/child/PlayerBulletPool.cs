@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-public class BulletFactory : MonoBehaviour
+public class PlayerBulletPool : MonoBehaviour
 {
     
     public GameObject mainBulletPrefab;
@@ -16,7 +16,7 @@ public class BulletFactory : MonoBehaviour
     public float playerHeight;
     public float playerWidth;
 
-    public static BulletFactory Instance { get; private set; }
+    public static PlayerBulletPool Instance { get; private set; }
     void makeSingleTone()
     {
         if (Instance == null)

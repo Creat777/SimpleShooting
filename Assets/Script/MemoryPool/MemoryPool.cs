@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public abstract class MemoryPool : MonoBehaviour
 {
     //public static MemoryPool Instance { get; private set; }
@@ -35,7 +36,8 @@ public abstract class MemoryPool : MonoBehaviour
 
     public virtual void InitializePool(int size = 10)
     {
-        memoryPool.Clear();
+        // 객체를 생성할 때 DontDestroyOnLoad(obj); 를 사용했으니 클리어할 필요 없음 -> 메모리 단편화 방지됨
+        //memoryPool.Clear();
         for (int i = 0; i < size; i++)
             CreateNewObject();
     }
@@ -45,6 +47,8 @@ public abstract class MemoryPool : MonoBehaviour
         GameObject obj = Instantiate(Prefab);
         if (obj != null)
         {
+            // 메모리풀에 속하는 객체는 직접적인 삭제가 있지 않는 이상 보존함
+            DontDestroyOnLoad(obj); 
             obj.SetActive(false);
 
             if (memoryPool != null)

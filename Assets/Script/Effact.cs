@@ -16,7 +16,7 @@ public class Effact : MonoBehaviour
     public void EffectEnd()
     {
         //Debug.Log("¿Ã∆Â∆Æ ¡æ∑·");
-        EffactPoolManager.Instance.ReturnObject(gameObject);
+        BombEffactPool.Instance.ReturnObject(gameObject);
     }
 
     public void SetAble(Vector3 pos)

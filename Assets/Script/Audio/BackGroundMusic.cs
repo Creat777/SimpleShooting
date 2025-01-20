@@ -13,11 +13,11 @@ public class BackGroundMusic : GameAudio
         if (Instance == null)
         {
             Instance = this; // 스크립트 컴포넌트
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
             return;
         }
     }

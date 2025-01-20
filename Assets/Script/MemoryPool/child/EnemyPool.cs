@@ -15,10 +15,22 @@ public abstract class EnemyPool : MemoryPool
     protected override void CreateNewObject()
     {
         GameObject enemy = Instantiate(Prefab);
-        EnemyMonster enemyScript = enemy.GetComponent<EnemyMonster>();
-        enemyScript.Deactive();
+        
         if (memoryPool != null)
         {
+            // 메모리풀에 속하는 객체는 직접적인 삭제가 있지 않는 이상 보존함
+            DontDestroyOnLoad(enemy);
+
+            EnemyMonster enemyScript = enemy.GetComponent<EnemyMonster>();
+            if(enemyScript != null)
+            {
+                enemyScript.Deactive();
+            }
+            else
+            {
+                Debug.LogError("enemyScript를 찾을 수 없음");
+            }
+
             memoryPool.Enqueue(enemy);
             //Debug.Log("enemyPool 객체가 존재함");
         }
@@ -50,7 +62,7 @@ public abstract class EnemyPool : MemoryPool
 
     public override void ReturnObject(GameObject obj)
     {
-        EffactPoolManager.Instance.GetObject(obj.transform.position);
+        BombEffactPool.Instance.GetObject(obj.transform.position);
         audioSource.volume = ButtonClickAudio.Instance.LoadVolumeData();
         audioSource.Play();
         obj.GetComponent<EnemyMonster>().Deactive();

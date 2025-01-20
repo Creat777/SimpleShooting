@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Space))
         {
-            BulletFactory.Instance.EnableBullets();
+            PlayerBulletPool.Instance.EnableBullets();
         }
     }
 
